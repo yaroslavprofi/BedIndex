@@ -26,7 +26,7 @@ class BedReaderClass : BedReader {
                 Files.createFile(indexFile)
                 Files.write(
                     fileNames,
-                    "${indexFile.toAbsolutePath()}$LINE_SEPARATOR".toByteArray(),
+                    "${indexFile.toAbsolutePath()}${Constants.LINE_SEPARATOR}".toByteArray(),
                     StandardOpenOption.APPEND
                 )
             }

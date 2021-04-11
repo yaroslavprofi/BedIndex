@@ -62,7 +62,7 @@ class IndexEntrySorter(
     }
 
     private fun preSort() {
-        val blockSize = 1L * B
+        val blockSize = 1L * Constants.B
         val reader = BaseBufferedReader(path)
         var temp = createTemp()
         var writer = BufferedBlockEntryWriter(temp, blockSize)
@@ -93,7 +93,7 @@ class IndexEntrySorter(
 
     fun sort() {
         preSort()
-        var blockSize: Long = 1L * B
+        var blockSize: Long = 1L * Constants.B
         while (path.toFile().length() / blockSize > 1) {
             val indicesNumber: Long = path.toFile().length() / blockSize
             val temp = createTemp()

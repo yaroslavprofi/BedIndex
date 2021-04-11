@@ -1,7 +1,5 @@
 package parsers
 
-import EOF
-
 open class BaseEntryParser(
     protected val source: String
 ) {
@@ -23,7 +21,7 @@ open class BaseEntryParser(
     }
 
     protected fun nextChar() {
-        ch = if (index < source.length) source[index++] else EOF
+        ch = if (index < source.length) source[index++] else Constants.EOF
     }
 
     protected fun expect(c: Char) {

@@ -1,6 +1,10 @@
 import org.junit.Test
 import java.nio.file.Path
 
+
+/**
+ * Tests for [BedReader]
+ */
 class IndexTest {
     private val resources: Path = Path.of("src/test/resources")
 

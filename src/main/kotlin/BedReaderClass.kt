@@ -5,10 +5,25 @@ import parsers.IndexEntryParser
 import java.io.RandomAccessFile
 import java.nio.file.*
 
+
+/**
+ * Implement class for [BedReader]
+ */
 class BedReaderClass : BedReader {
 
+
+    /**
+     * Creates index files in [indexPath] directory and sorts them.
+     * File `[indexPath].index` contains all index files names
+     *
+     * @see IndexEntrySorter
+     */
     override fun createIndex(bedPath: Path, indexPath: Path) {
         val bed = RandomAccessFile(bedPath.toFile(), "r")
+        if (Files.exists(indexPath)) {
+            System.err.println("Directory $indexPath already exists. Cannot create index files in non empty directory")
+            return
+        }
         Files.createDirectory(indexPath)
         val fileNames = Files.createFile(indexPath.resolve(".index"))
 
@@ -48,10 +63,21 @@ class BedReaderClass : BedReader {
         }
     }
 
+
+    /**
+     * Returns instance of [BedIndexClass]
+     */
     override fun loadIndex(indexPath: Path): BedIndex {
         return BedIndexClass(indexPath)
     }
 
+
+    /**
+     * Finds all [BedEntry] that matches pattern: [BedEntry.chromosome] equals to [chromosome],
+     * [BedEntry.start] >= [start] and [BedEntry.end] <= [end] using binary search on sorted file provided by [index]
+     *
+     * @see BufferedEntrySearcher
+     */
     override fun findWithIndex(
         index: BedIndex,
         bedPath: Path,

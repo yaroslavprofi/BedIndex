@@ -1,6 +1,10 @@
 import java.nio.file.Path
 
 interface BedIndex {
+
+    /**
+     * Saves index filenames into map that matches chromosome to its index path
+     */
     fun indexPathByChromosome(chromosome: String): Path
 }
 

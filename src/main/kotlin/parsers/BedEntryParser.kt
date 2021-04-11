@@ -2,15 +2,41 @@ package parsers
 
 import BedEntry
 
-class BedEntryParser(
-    source: String
-) : BaseEntryParser(source) {
 
+/**
+ * Parses string into [BedEntry]
+ */
+class BedEntryParser(
+    sourceString: String
+) : BaseEntryParser(sourceString) {
+
+
+    /**
+     * Skips whitespaces while they appear
+     */
     private fun skipWhitespaces() {
         while (test(' ') || test('\t')) {
         }
     }
 
+
+    /**
+     * Parses [BedEntry.other]
+     */
+    private fun parseList(): List<Any> {
+        val res = arrayListOf<Any>()
+        skipWhitespaces()
+        while (char != Constants.EOF) {
+            res.add(parseString())
+            skipWhitespaces()
+        }
+        return res
+    }
+
+
+    /**
+     * Parses whitespace-separated string into [BedEntry]
+     */
     fun parse(): BedEntry {
         val chromosome = parseString()
         skipWhitespaces()
@@ -18,7 +44,6 @@ class BedEntryParser(
         skipWhitespaces()
         val end = parseString().toInt()
         skipWhitespaces()
-        val other = listOf<Any>(ch + source.substring(index, source.length - 2))
-        return BedEntry(chromosome, start, end, other)
+        return BedEntry(chromosome, start, end, parseList())
     }
 }

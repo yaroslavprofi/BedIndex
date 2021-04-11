@@ -1,3 +1,6 @@
+/**
+ * BedEntry data class
+ */
 data class BedEntry(
     val chromosome: String,
     val start: Int,
@@ -5,6 +8,11 @@ data class BedEntry(
     val other: List<Any>
 )
 
+/**
+ * IndexEntry data class
+ * @property compare used for index file sort
+ * @see IndexEntrySorter.preSort
+ */
 data class IndexEntry(
     val start: Int,
     val end: Int,

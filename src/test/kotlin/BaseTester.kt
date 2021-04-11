@@ -2,10 +2,18 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.test.assertTrue
 
+
+/**
+ * Base tester for [IndexTest]
+ */
 class BaseTester {
     private val bedReader = BedReaderClass()
-    private val dummyReader = DummyBedFinder()
+    private val simpleBedFinder = SimpleBedFinder()
 
+
+    /**
+     * Deletes directory with index files
+     */
     companion object {
         fun deleteIndex(indexPath: Path) {
             if (Files.exists(indexPath.resolve(".index"))) {
@@ -14,6 +22,10 @@ class BaseTester {
         }
     }
 
+
+    /**
+     * Checks if content of [first] is equal to content of [second]
+     */
     private fun listEquals(
         first: List<BedEntry>,
         second: List<BedEntry>
@@ -36,6 +48,10 @@ class BaseTester {
         return true
     }
 
+
+    /**
+     * Test equality of [SimpleBedFinder.findWithOutIndex] and [BedReaderClass.findWithIndex] with given arguments
+     */
     private fun testFindWithIndex(
         bedPath: Path,
         bedIndex: BedIndex,
@@ -52,7 +68,7 @@ class BaseTester {
                     start,
                     end
                 ),
-                dummyReader.findWithIndex(
+                simpleBedFinder.findWithOutIndex(
                     bedPath,
                     chromosome,
                     start,
@@ -62,6 +78,12 @@ class BaseTester {
         )
     }
 
+
+    /**
+     * Runs [testFindWithIndex] on [simpleEntries].
+     * [simpleEntries] contains [BedEntry] that has only [BedEntry.chromosome], [BedEntry.start] and [BedEntry.end]
+     * for running [testFindWithIndex]
+     */
     fun test(
         bedPath: Path,
         indexPath: Path,

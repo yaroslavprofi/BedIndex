@@ -9,14 +9,14 @@ import BedEntry
  * Class for getting string or string representation of [BedEntry] or [IndexEntry]
  */
 open class BaseBufferedReader(
-    blockPath: Path,
+    pathToFile: Path,
     bufferSize: Int = Constants.B
 ) {
     private val buffer = ByteArray(bufferSize)
 
     protected var bufferOffsetStart: Long = 0
     protected var bufferOffsetEnd: Long = 0
-    protected val file = RandomAccessFile(blockPath.toFile(), "r")
+    protected val file = RandomAccessFile(pathToFile.toFile(), "r")
     protected var fileEnd: Long = file.length() - 1
     protected var fileStart: Long = 0
     protected var index: Long = 0

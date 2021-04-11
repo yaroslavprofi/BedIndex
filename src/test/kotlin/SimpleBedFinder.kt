@@ -1,8 +1,13 @@
 import parsers.BedEntryParser
 import java.nio.file.Path
 
-class DummyBedFinder {
-    fun findWithIndex(
+class SimpleBedFinder {
+
+    /**
+     * Works as [BedReader.findWithIndex] but does not use index files.
+     * Search for required [BedEntry]s by reading the whole [bedPath] file
+     */
+    fun findWithOutIndex(
         bedPath: Path,
         chromosome: String,
         start: Int,

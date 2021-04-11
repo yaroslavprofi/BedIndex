@@ -6,9 +6,17 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 
+
+/**
+ * Performs merge sort of file that is supposed to contain only [IndexEntry.toString]
+ */
 class IndexEntrySorter(
     private var path: Path
 ) {
+
+    /**
+     *  Copies [temp] to [path] and deletes [temp]
+     */
     private fun deleteTemp(temp: Path) {
         Files.copy(
             temp,
@@ -18,6 +26,11 @@ class IndexEntrySorter(
         temp.toFile().delete()
     }
 
+
+    /**
+     *  Creates temp file for new sort iteration
+     *  @see IndexEntrySorter.sort
+     */
     private fun createTemp(): Path {
         return Files.createTempFile(
             path.parent,
@@ -26,7 +39,17 @@ class IndexEntrySorter(
         )
     }
 
-    private fun merge(first: Long, second: Long, entryWriter: BufferedBlockEntryWriter, blockSize: Long) {
+
+    /**
+     * Merges two sorted 'blocks' in sorted one
+     *
+     * @see BufferedBlockEntryWriter
+     */
+    private fun merge(
+        first: Long, second: Long,
+        entryWriter: BufferedBlockEntryWriter,
+        blockSize: Long
+    ) {
         val firstBlockReader = BufferedBlockEntryReader(path, blockSize, first)
         val secondBlockReader = BufferedBlockEntryReader(path, blockSize, second)
         var entryFirst = firstBlockReader.nextEntry()
@@ -61,6 +84,11 @@ class IndexEntrySorter(
         secondBlockReader.close()
     }
 
+
+    /**
+     * Transform [path] into 'block' file.
+     * Each 'block' is is sorted with [List.sortedWith] with comparator [IndexEntry.compare]
+     */
     private fun preSort() {
         val blockSize = 1L * Constants.B
         val reader = BaseBufferedReader(path)
@@ -91,6 +119,10 @@ class IndexEntrySorter(
         deleteTemp(temp)
     }
 
+
+    /**
+     * Performs merge sort of file
+     */
     fun sort() {
         preSort()
         var blockSize: Long = 1L * Constants.B

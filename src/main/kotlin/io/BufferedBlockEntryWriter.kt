@@ -8,11 +8,11 @@ import java.nio.file.Path
  * and trailed with whitespaces and line separator to fit exactly [blockSize]
  */
 class BufferedBlockEntryWriter(
-    path: Path,
+    pathToFile: Path,
     private val blockSize: Long,
     private val bufferSize: Int = Constants.B
 ) {
-    private val writer = path.toFile().bufferedWriter(Charsets.UTF_8)
+    private val writer = pathToFile.toFile().bufferedWriter(Charsets.UTF_8)
     private var buffer = arrayListOf<String>()
     private var bufferLength: Int = 0
     private var length: Long = 0
@@ -34,7 +34,7 @@ class BufferedBlockEntryWriter(
     /**
      * Writes trailing whitespaces and line separator
      */
-    private fun end() {
+    private fun addTrailing() {
         val builder = StringBuilder()
         for (count in length until blockSize - Constants.LINE_SEPARATOR.length) {
             builder.append(' ')
@@ -48,7 +48,7 @@ class BufferedBlockEntryWriter(
      */
     fun completeBlock() {
         flush()
-        end()
+        addTrailing()
         buffer.clear()
         length = 0
     }
@@ -73,7 +73,7 @@ class BufferedBlockEntryWriter(
      * Write buffer if it is not empty and then closes [writer]
      */
     fun close() {
-        if (length > 0L) {
+        if (length > 0) {
             completeBlock()
         }
         writer.close()

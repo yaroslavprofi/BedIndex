@@ -8,11 +8,11 @@ import java.nio.file.Path
  * @see BufferedBlockEntryWriter
  */
 class BufferedBlockEntryReader(
-    blockPath: Path,
+    pathToBlockFile: Path,
     blockSize: Long,
     blockIndex: Long,
     bufferSize: Int = Constants.B
-) : BaseBufferedReader(blockPath, bufferSize) {
+) : BaseBufferedReader(pathToBlockFile, bufferSize) {
 
     init {
         fileStart = blockSize * blockIndex

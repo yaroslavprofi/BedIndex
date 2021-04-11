@@ -1,3 +1,4 @@
+import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.test.assertTrue
 
@@ -5,8 +6,12 @@ class BaseTester {
     private val bedReader = BedReaderClass()
     private val dummyReader = DummyBedFinder()
 
-    private fun deleteIndexDir() {
-
+    companion object {
+        fun deleteIndex(indexPath: Path) {
+            if (Files.exists(indexPath.resolve(".index"))) {
+                indexPath.toFile().deleteRecursively()
+            }
+        }
     }
 
     private fun listEquals(
@@ -62,6 +67,7 @@ class BaseTester {
         indexPath: Path,
         simpleEntries: List<BedEntry>
     ) {
+        deleteIndex(indexPath)
         bedReader.createIndex(bedPath, indexPath)
         for (simpleEntry in simpleEntries) {
             testFindWithIndex(
@@ -72,6 +78,7 @@ class BaseTester {
                 simpleEntry.end
             )
         }
+        deleteIndex(indexPath)
     }
 
 }

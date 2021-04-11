@@ -60,9 +60,11 @@ class BedReaderClass : BedReader {
         end: Int
     ): List<BedEntry> {
         val chromFile = index.indexPathByChromosome(chromosome)
-        val offset = BaseBufferedEntrySearcher(
+        val searcher = BaseBufferedEntrySearcher(
             index.indexPathByChromosome(chromosome)
-        ).firstNoLessThan(start)
+        )
+        val offset = searcher.firstNoLessThan(start)
+        searcher.close()
         if (offset < 0) {
             System.err.println("no line in file with such start: $start")
             return listOf()
@@ -82,6 +84,7 @@ class BedReaderClass : BedReader {
                 res.add(BedEntryParser(bed.readLine()).parse())
             }
         }
+        reader.close()
         return res
     }
 }

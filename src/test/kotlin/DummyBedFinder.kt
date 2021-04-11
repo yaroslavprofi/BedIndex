@@ -26,6 +26,7 @@ class DummyBedFinder {
             }
             line = reader.readLine()
         }
+        reader.close()
         return res
     }
 }

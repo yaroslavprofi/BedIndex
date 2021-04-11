@@ -39,6 +39,9 @@ class BaseBufferedEntrySearcher(
 
     fun firstNoLessThan(value: Int): Long {
         var right: Long = nearestEntry(fileEnd)
+        if (indexEntryAt(right).start < value) {
+            return -1
+        }
         var left: Long = nearestEntry(0)
         var mid: Long = nearestEntry(left + (right - left) / 2)
         while (left != mid && right != mid) {
@@ -49,12 +52,7 @@ class BaseBufferedEntrySearcher(
             }
             mid = nearestEntry(left + (right - left) / 2)
         }
-        val resLeft = indexEntryAt(nearestEntry(left))
-        val resRight = indexEntryAt(nearestEntry(right))
-        if (resLeft.start > value || resRight.start < value) {
-            return -1
-        }
-        if (resLeft.start == value) {
+        if (indexEntryAt(nearestEntry(left)).start >= value) {
             return left
         }
         return right

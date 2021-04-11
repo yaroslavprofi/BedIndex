@@ -2,14 +2,18 @@ import org.junit.Test
 import java.nio.file.Path
 
 class IndexTest {
+    private val resources: Path = Path.of("src/test/resources")
+
     @Test
     fun testInput() {
         val tester = BaseTester()
         tester.test(
-            Path.of("C:\\Users\\yaros\\Desktop\\jb_stazhka_2021\\JBR_Genome_Browser\\src\\test\\resources\\input.bed"),
-            Path.of("C:\\Users\\yaros\\Desktop\\jb_stazhka_2021\\JBR_Genome_Browser\\src\\test\\resources\\out"),
+            resources.resolve("input.bed"),
+            resources.resolve("out"),
             listOf(
-                BedEntry("chr7", 127475864, 127132131, listOf())
+                BedEntry("chr7", 127475864, 127132131, listOf()),
+                BedEntry("chadar7", 127471196, 127473530, listOf()),
+                BedEntry("asdfchr7", 12747, 999999999, listOf()),
             )
         )
     }

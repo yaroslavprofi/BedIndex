@@ -8,7 +8,6 @@ class BedEntryParser(
 
     private fun skipWhitespaces() {
         while (test(' ') || test('\t')) {
-
         }
     }
 

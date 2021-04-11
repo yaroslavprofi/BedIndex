@@ -1,4 +1,4 @@
-import io.BaseBufferedBlockEntryReader
+import io.BufferedBlockEntryReader
 import io.BufferedBlockEntryWriter
 import io.BaseBufferedReader
 import parsers.IndexEntryParser
@@ -27,8 +27,8 @@ class IndexEntrySorter(
     }
 
     private fun merge(first: Long, second: Long, entryWriter: BufferedBlockEntryWriter, blockSize: Long) {
-        val firstBlockReader = BaseBufferedBlockEntryReader(path, blockSize, first)
-        val secondBlockReader = BaseBufferedBlockEntryReader(path, blockSize, second)
+        val firstBlockReader = BufferedBlockEntryReader(path, blockSize, first)
+        val secondBlockReader = BufferedBlockEntryReader(path, blockSize, second)
         var entryFirst = firstBlockReader.nextEntry()
         var entrySecond = secondBlockReader.nextEntry()
         while (entryFirst != "" || entrySecond != "") {
@@ -76,7 +76,7 @@ class IndexEntrySorter(
         temp = createTemp()
         writer = BufferedBlockEntryWriter(temp, blockSize)
         for (index in 0 until (path.toFile().length() / blockSize)) {
-            val liner = BaseBufferedBlockEntryReader(path, blockSize, index)
+            val liner = BufferedBlockEntryReader(path, blockSize, index)
             val list = arrayListOf<IndexEntry>()
             while (liner.hasNext()) {
                 list.add(IndexEntryParser(liner.nextEntry()).parse())
@@ -102,7 +102,7 @@ class IndexEntrySorter(
                 merge(index * 2, index * 2 + 1, writer, blockSize)
             }
             if (indicesNumber % 2 != 0L) {
-                val liner = BaseBufferedBlockEntryReader(path, blockSize, indicesNumber - 1)
+                val liner = BufferedBlockEntryReader(path, blockSize, indicesNumber - 1)
                 while (liner.hasNext()) {
                     writer.addString(liner.nextEntry())
                 }

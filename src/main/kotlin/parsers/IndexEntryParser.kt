@@ -4,7 +4,7 @@ import IndexEntry
 
 class IndexEntryParser(
     source: String
-) : EntryBaseParser(source) {
+) : BaseEntryParser(source) {
 
     fun parse(): IndexEntry {
         expect("IndexEntry(")

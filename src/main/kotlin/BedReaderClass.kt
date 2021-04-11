@@ -1,4 +1,4 @@
-import io.BaseBufferedEntrySearcher
+import io.BufferedEntrySearcher
 import io.BaseBufferedReader
 import parsers.BedEntryParser
 import parsers.IndexEntryParser
@@ -60,7 +60,7 @@ class BedReaderClass : BedReader {
         end: Int
     ): List<BedEntry> {
         val chromFile = index.indexPathByChromosome(chromosome)
-        val searcher = BaseBufferedEntrySearcher(
+        val searcher = BufferedEntrySearcher(
             index.indexPathByChromosome(chromosome)
         )
         val offset = searcher.firstNoLessThan(start)

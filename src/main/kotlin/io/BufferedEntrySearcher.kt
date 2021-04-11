@@ -7,7 +7,7 @@ import java.lang.Long.max
 import java.nio.file.Path
 import java.util.function.Predicate
 
-class BaseBufferedEntrySearcher(
+class BufferedEntrySearcher(
     path: Path,
     private val bufferSize: Int = B
 ) : BaseBufferedReader(path, bufferSize) {

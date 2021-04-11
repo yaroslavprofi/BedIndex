@@ -2,7 +2,7 @@ package parsers
 
 import EOF
 
-open class EntryBaseParser(
+open class BaseEntryParser(
     protected val source: String
 ) {
     protected var index = 1

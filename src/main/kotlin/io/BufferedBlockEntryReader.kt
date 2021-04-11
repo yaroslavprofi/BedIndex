@@ -4,7 +4,7 @@ import B
 import LINE_SEPARATOR
 import java.nio.file.Path
 
-class BaseBufferedBlockEntryReader(
+class BufferedBlockEntryReader(
     blockPath: Path,
     blockSize: Long,
     blockIndex: Long,

@@ -4,7 +4,7 @@ import BedEntry
 
 class BedEntryParser(
     source: String
-) : EntryBaseParser(source) {
+) : BaseEntryParser(source) {
 
     private fun skipWhitespaces() {
         while (test(' ') || test('\t')) {

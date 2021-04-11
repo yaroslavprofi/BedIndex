@@ -1,13 +1,16 @@
 package io
 
-import B
-import EOF
 import java.io.RandomAccessFile
 import java.nio.file.Path
+import IndexEntry
+import BedEntry
 
+/**
+ * Class for getting string or string representation of [BedEntry] or [IndexEntry]
+ */
 open class BaseBufferedReader(
     blockPath: Path,
-    bufferSize: Int = B
+    bufferSize: Int = Constants.B
 ) {
     private val buffer = ByteArray(bufferSize)
 
@@ -18,22 +21,34 @@ open class BaseBufferedReader(
     protected var fileStart: Long = 0
     protected var index: Long = 0
 
+
+    /**
+     * Skip whitespaces until [char] is whitespace or the end of file reached
+     */
     private fun skipWhiteSpaces(): Long {
-        while (char() != EOF && char().isWhitespace()) {
+        while (char() != Constants.EOF && char().isWhitespace()) {
             index++
         }
         return index
     }
 
+
+    /**
+     * Read bytes from file into [buffer] and updates [bufferOffsetStart] and [bufferOffsetEnd]
+     */
     protected fun read(newBufferOffset: Long) {
         bufferOffsetStart = newBufferOffset
         file.seek(bufferOffsetStart)
         bufferOffsetEnd = file.read(buffer) + bufferOffsetStart
     }
 
+
+    /**
+     * Returns char at position [index] in [file] or EOF if the end of file reached
+     */
     protected fun char(): Char {
         if (index > fileEnd) {
-            return EOF
+            return Constants.EOF
         }
         if (index < bufferOffsetStart || index >= bufferOffsetEnd) {
             read(index)
@@ -41,10 +56,14 @@ open class BaseBufferedReader(
         return buffer[(index - bufferOffsetStart).toInt()].toChar()
     }
 
+
+    /**
+     * Returns nearest to [index] string representation of [BedEntry] or [IndexEntry]
+     */
     fun nextEntry(): String {
         skipWhiteSpaces()
         val acc = StringBuilder()
-        while (char() != EOF) {
+        while (char() != Constants.EOF) {
             acc.append(char())
             if (char() == ')') {
                 index++
@@ -55,25 +74,41 @@ open class BaseBufferedReader(
         return acc.toString()
     }
 
+
+    /**
+     * Returns `true` if non-whitespace symbol could be read, `false` otherwise
+     */
     fun hasNext(): Boolean {
         skipWhiteSpaces()
-        return char() != EOF
+        return char() != Constants.EOF
     }
 
+
+    /**
+     * Sets [index]
+     */
     fun setOffset(offset: Long) {
         index = offset
     }
 
+
+    /**
+     * Returns nearest to [index] string
+     */
     fun next(): String {
         skipWhiteSpaces()
         val acc = StringBuilder()
-        while (char() != EOF && !char().isWhitespace()) {
+        while (char() != Constants.EOF && !char().isWhitespace()) {
             acc.append(char())
             index++
         }
         return acc.toString()
     }
 
+
+    /**
+     * Closes [file]
+     */
     fun close() {
         file.close()
     }

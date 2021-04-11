@@ -1,19 +1,22 @@
 package io
 
-import B
-import LINE_SEPARATOR
 import java.nio.file.Path
 
+/**
+ * Reader for file that supposed to be a 'block' file
+ *
+ * @see BufferedBlockEntryWriter
+ */
 class BufferedBlockEntryReader(
     blockPath: Path,
     blockSize: Long,
     blockIndex: Long,
-    bufferSize: Int = B
+    bufferSize: Int = Constants.B
 ) : BaseBufferedReader(blockPath, bufferSize) {
 
     init {
         fileStart = blockSize * blockIndex
         index = fileStart
-        fileEnd = fileStart + blockSize - 1 - LINE_SEPARATOR.length
+        fileEnd = fileStart + blockSize - 1 - Constants.LINE_SEPARATOR.length
     }
 }

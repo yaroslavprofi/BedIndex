@@ -1,6 +1,5 @@
 package io
 
-import B
 import IndexEntry
 import parsers.IndexEntryParser
 import java.lang.Long.max
@@ -9,7 +8,7 @@ import java.util.function.Predicate
 
 class BufferedEntrySearcher(
     path: Path,
-    private val bufferSize: Int = B
+    private val bufferSize: Int = Constants.B
 ) : BaseBufferedReader(path, bufferSize) {
 
     private fun charLeft(): Char {
